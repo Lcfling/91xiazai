@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/aui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>下载APP</title>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/global.js?t=1"></script>
+    <script src="js/Router.js?t=1"></script>
+    <style>
+        body{background:url("img/download_bg.jpg")no-repeat center;background-size: cover;}
+        .col-7{margin-top: 70vh}
+        #maskimg{ width:100%;
+            height: 50vh; background-image: url("mask.png") ; position: fixed;z-index: 99;background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;}}
+    </style>
+</head>
+<body>
+
+<div class="col-7 auto">
+    <img class="ios"  onClick="clickevent()" src="img/ios_btn.png" alt="" width="100%">
+    <img class="an"  onClick="clickeventan() " src="img/andr_btn.png" alt="" width="100%">
+</div>
+
+</body>
+</html>
+<script>
+
+    function hittest(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger"){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function clickevent(){
+
+        if(hittest()){
+            addmask();
+        }else{
+
+            window.location.href="https://www.pgyer.com/Qk5D";
+        }
+    }
+
+    function clickeventan(){
+        if(hittest()){
+            addmask();
+        }else{
+            var temp= new Date().getTime()
+            window.location.href="https://www.pgyer.com/U3CI";
+        }
+    }
+
+    function addmask(){
+        var contheight=$(document).height();
+        var contwidth=$(document).width();
+        var newDiv=document.createElement("div");
+        newDiv.className="mask";
+        newDiv.id='guanzhu0';
+        newDiv.style.width=contwidth+'px';
+        newDiv.style.opacity= '0.7';
+        newDiv.style.height=contheight+'px';
+        newDiv.style.background="#000";
+        newDiv.style.position='absolute';
+        newDiv.style.top="0px";
+        newDiv.style.left="0px";
+        document.getElementsByTagName("body").item(0).appendChild(newDiv);
+
+        var newDiv=document.createElement("div");
+        newDiv.id='maskimg';
+        newDiv.style.top="0px";
+        newDiv.style.left="0px";
+        document.getElementsByTagName("body").item(0).appendChild(newDiv);
+    }
+</script>

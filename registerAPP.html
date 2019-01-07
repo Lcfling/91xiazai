@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/aui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>下载APP</title>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/global.js?t=1"></script>
+    <script src="js/Router.js?t=1"></script>
+    <style>
+        body{background:url("img/register_bg.jpg")no-repeat center;background-size: cover;}
+        .col-8{padding-top: 50vh}
+        ul li{padding:.7rem 1rem;background:#fff;border-radius:30px;box-shadow: 0 4px 8px rgba(12,2,3,.3);margin-bottom:1rem;}
+        ul li:nth-child(4){background:#50a8ff;color:#fff;}
+    </style>
+</head>
+<body>
+
+<div class="col-8 auto">
+    <ul>
+        <li>
+            <input id="phone" class="line-height-2 border-no outline-no pad-l-5" type="text" placeholder="输入手机号码">
+        </li>
+        <li class="flex">
+            <input id="vri" class="f1 mar-r-1 line-height-2 border-no outline-no pad-l-5 border-r-gray" type="text" placeholder="输入图片验证码">
+            <img class="yzm_code" src="" alt="" width="65">
+        </li>
+        <li class="flex">
+            <input id="code" class="f1 mar-r-1 line-height-2 border-no outline-no pad-l-5 border-r-gray" type="text" placeholder="输入验证码">
+            <span id="yzm" >获取验证码</span>
+        </li>
+        <li class="center f18" id="sub">注册下载</li>
+    </ul>
+</div>
+<script>
+    var hostUrl="https://www.darkhorse.vip/"
+    $(document).ready(function () {
+        var num=60;
+        var state=false;
+        $(".yzm_code").attr('src', '/index.php?g=app&m=verify&a=mobile&mt=' + Math.random());
+        $(".yzm_code").click(function () {
+            $(this).attr('src', '/index.php?g=app&m=verify&a=mobile&mt=' + Math.random());
+        });
+
+        $("#yzm").click(function() {
+            alert("sss");
+            if(!state){
+                state=true;
+                var vri=$('#vri').val()
+                if(vri==""){
+                    call("请输入验证码")
+                    state=true;
+                }
+                var data={};
+                data.mobile=$("#phone").val();
+                data.yzm=vri
+                var a=new AjaxRequest({
+                    type: "POST",
+                    param: data,
+                    url: "/app/login/sendmobile",
+                    dataType: "json",
+                    isShowLoader: false,
+                    callBack: function(res){
+                        console.log(res);
+                        if(res.status==1){
+                            var time=setInterval(function () {
+                                num--;
+                                if(num>0){
+                                    $("#yzm").text(num+"s后重新获取");
+                                }else{
+                                    $("#yzm").text("获取验证码");
+                                    num=60;
+                                    clearInterval(time);
+                                    state=false;
+                                }
+                            },1000);
+                        }else{
+                            call(res.info);
+                            state=false;
+                        }
+
+
+                    },
+                    error:function (err) {
+                        console.log(err);
+                        state=false;
+
+                    }
+                });
+            }
+        })
+        $('#sub').click(function () {
+            var data={};
+
+            data.mobile=$("#phone").val();
+            data.code=$('#code').val();
+            data.pid=getQueryString('pid');
+            var a=new AjaxRequest({
+                type: "POST",
+                param: data,
+                url: "/app/login/mobile",
+                dataType: "json",
+                isShowLoader: false,
+                callBack: function(res){
+                    console.log(res);
+                    if(res.status==1){
+                        window.location.href="download.html";
+                    }
+
+                },
+                error:function (err) {
+                    console.log(err);
+                    call(res.info);
+
+                }
+            });
+        })
+
+
+    })
+</script>
+
+</body>
+</html>
